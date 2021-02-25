@@ -39,12 +39,8 @@ object SessionStore {
 
     def getSession(id: SessionIdentifier): F[Option[A]] = access(id).get
 
-    def deleteSession(id: SessionIdentifier): F[Unit] = access.unsetKey(id)
-
     def modifySession[B](id: SessionIdentifier, f: Option[A] => (Option[A], B)): F[B] = 
       access(id).modify(f)
   }
-
-
 
 }

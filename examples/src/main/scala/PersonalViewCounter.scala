@@ -23,21 +23,22 @@ object PersonalViewCounter extends IOApp {
       _ <- EmberServerBuilder.default[F]
         .withHttpApp(routes.orNotFound)
         .build
-
     } yield ()
   }
 
   case class PageViews(int: Int)
 
-  def app[F[_]: Defer: Applicative]: SessionApp[F, Option[PageViews]] = {
+  def app[F[_]: Monad]: SessionRoutes[F, Option[PageViews]] = {
     val dsl = new Http4sDsl[F]{}; import dsl._
-    SessionApp.ofOptional[F][PageViews]{
+    SessionRoutes.of{
       case GET -> Root / "reset" as _ => 
         Ok("Reset PageViews").withContext(None)
+      case GET -> Root / "passthrough" as initial => 
+        Ok("Hit Passthrough").withContext(initial)
       case GET -> _ as Some(views) => 
-        Ok(s"You've Been Here ${views.int}")
+        Ok(s"You've been here ${views.int} time")
           .withContext(views.copy(views.int + 1).some)
-      case GET -> _ as None =>  Ok("You've Never Been Here Before").withContext(PageViews(1).some)
+      case GET -> _ as None =>  Ok("You've never been here before").withContext(PageViews(1).some)
     }
   }
 
