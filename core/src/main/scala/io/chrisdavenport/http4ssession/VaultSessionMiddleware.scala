@@ -12,6 +12,11 @@ object VaultSessionMiddleware {
   case object VaultSessionReset {
     val key = Key.newKey[cats.effect.SyncIO, VaultSessionReset.type].unsafeRunSync
   }
+  case class VaultKeysToRemove(l: List[Key[_]])
+  object VaultKeysToRemove {
+    val key = Key.newKey[cats.effect.SyncIO, VaultKeysToRemove].unsafeRunSync
+  }
+
 
   def impl[F[_]: Monad, A](
     sessionStore: SessionStore[F, Vault], 
@@ -44,7 +49,9 @@ object VaultSessionMiddleware {
         .map{resp => 
           val outContext = contextRequest.context.fold(resp.attributes)(context => Vault.union(context, resp.attributes))
           outContext.lookup(VaultSessionReset.key).fold(
-            ContextResponse(outContext.some, resp.withAttributes(outContext))
+            outContext.lookup(VaultKeysToRemove.key).fold(
+              ContextResponse(outContext.some, resp.withAttributes(outContext))
+            )(toRemove =>  ContextResponse(toRemove.l.foldLeft(outContext){ case (v, k) => v.delete(k)}.some, resp.withAttributes(outContext)))
           )(reset => ContextResponse(None, resp.withAttributes(outContext)))
         }
     }
