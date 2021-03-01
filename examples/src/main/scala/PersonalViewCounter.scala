@@ -1,10 +1,11 @@
-package io.chrisdavenport.http4ssession
+package examples
 
 import cats._
 import cats.syntax.all._
 import cats.effect._
 import org.http4s._
 import org.http4s.implicits._
+import io.chrisdavenport.http4ssession._
 import io.chrisdavenport.http4ssession.syntax.all._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.ember.server.EmberServerBuilder
