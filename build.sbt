@@ -181,18 +181,18 @@ lazy val commonSettings = Seq(
 
 // General Settings
 inThisBuild(List(
-  organization := "io.chrisdavenport",
+  organization := "org.http4s",
   developers := List(
     Developer("ChristopherDavenport", "Christopher Davenport", "chris@christopherdavenport.tech", url("https://github.com/ChristopherDavenport"))
   ),
 
-  homepage := Some(url("https://github.com/ChristopherDavenport/http4s-session")),
+  homepage := Some(url("https://github.com/http4s/http4s-session")),
   licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
 
   pomIncludeRepository := { _ => false},
   scalacOptions in (Compile, doc) ++= Seq(
       "-groups",
       "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
-      "-doc-source-url", "https://github.com/ChristopherDavenport/http4s-session/blob/v" + version.value + "€{FILE_PATH}.scala"
+      "-doc-source-url", "https://github.com/http4s/http4s-session/blob/v" + version.value + "€{FILE_PATH}.scala"
   )
 ))
