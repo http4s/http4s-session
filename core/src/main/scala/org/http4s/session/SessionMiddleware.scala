@@ -1,4 +1,4 @@
-package io.chrisdavenport.http4ssession
+package org.http4s.session
 
 import cats._ 
 import cats.syntax.all._
