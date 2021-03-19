@@ -122,5 +122,7 @@ jobs:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
         run: sbt ++${{ matrix.scala }} ci-release
 
+      - uses: christopherdavenport/create-ghpages-ifnotexists@v1
+
       - name: Publish microsite
         run: sbt ++${{ matrix.scala }} site/publishMicrosite
