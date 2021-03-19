@@ -51,7 +51,7 @@ ThisBuild / githubWorkflowPublish := Seq(
       "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
       "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
       "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}")),
-
+  WorkflowStep.Use("christopherdavenport", "create-ghpages-ifnotexists", "v1"),
   WorkflowStep.Sbt(
     List("site/publishMicrosite"),
     name = Some("Publish microsite")
