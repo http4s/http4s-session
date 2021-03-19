@@ -1,4 +1,4 @@
-package io.chrisdavenport.http4ssession
+package org.http4s.session
 
 import io.chrisdavenport.random._
 import cats._
