@@ -37,7 +37,7 @@ ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
 
 // currently only publishing tags
 ThisBuild / githubWorkflowPublishTargetBranches :=
-  Seq(RefPredicate.StartsWith(Ref.Tag("v")))
+  Seq(RefPredicate.StartsWith(Ref.Tag("v")), RefPredicate.Equals(Ref.Branch("main")))
 
 ThisBuild / githubWorkflowPublishPreamble ++=
   WorkflowStep.Use("olafurpg", "setup-gpg", "v3") +: rubySetupSteps(None)
