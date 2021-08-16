@@ -171,7 +171,7 @@ lazy val commonSettings = Seq(
     "co.fs2"                      %% "fs2-io"                     % fs2V,
 
     "io.chrisdavenport"           %% "random"                     % "0.0.2",
-    "io.chrisdavenport"           %% "mapref"                     % "0.1.1",
+    "io.chrisdavenport"           %% "mapref"                     % "0.2.0",
     "org.http4s"                  %% "http4s-core"                % http4sV,
 
     "org.typelevel"               %%% "munit-cats-effect-2"        % munitCatsEffectV         % Test,
