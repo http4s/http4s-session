@@ -144,19 +144,19 @@ lazy val site = project.in(file("site"))
 lazy val commonSettings = Seq(
   testFrameworks += new TestFramework("munit.Framework"),
   libraryDependencies ++= {
-    if (isDotty.value) Seq.empty
+    if (ScalaArtifacts.isScala3(scalaVersion.value)) Seq.empty
     else Seq(
       compilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.full),
       compilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
     )
   },
   scalacOptions ++= {
-    if (isDotty.value) Seq("-source:3.0-migration")
+    if (ScalaArtifacts.isScala3(scalaVersion.value)) Seq("-source:3.0-migration")
     else Seq()
   },
   Compile / doc / sources := {
     val old = (Compile / doc / sources).value
-    if (isDotty.value)
+    if (ScalaArtifacts.isScala3(scalaVersion.value))
       Seq()
     else
       old
