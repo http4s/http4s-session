@@ -1,6 +1,6 @@
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
-val Scala213 = "2.13.5"
+val Scala213 = "2.13.6"
 
 ThisBuild / crossScalaVersions := Seq(Scala213)
 ThisBuild / scalaVersion := crossScalaVersions.value.last
@@ -59,19 +59,19 @@ ThisBuild / githubWorkflowPublish := Seq(
 )
 
 
-val catsV = "2.3.1"
-val catsEffectV = "2.3.1"
+val catsV = "2.6.1"
+val catsEffectV = "2.3.3"
 // val shapelessV = "2.3.3"
-val fs2V = "2.5.0"
-val http4sV = "0.21.19"
+val fs2V = "2.5.9"
+val http4sV = "0.21.26"
 val circeV = "0.13.0"
 val doobieV = "0.9.4"
 val log4catsV = "1.1.1"
 
-val munitCatsEffectV = "0.12.0"
+val munitCatsEffectV = "0.13.1"
 // val specs2V = "4.10.6"
 
-val kindProjectorV = "0.11.3"
+val kindProjectorV = "0.13.1"
 val betterMonadicForV = "0.3.1"
 
 // Projects
@@ -144,19 +144,19 @@ lazy val site = project.in(file("site"))
 lazy val commonSettings = Seq(
   testFrameworks += new TestFramework("munit.Framework"),
   libraryDependencies ++= {
-    if (isDotty.value) Seq.empty
+    if (ScalaArtifacts.isScala3(scalaVersion.value)) Seq.empty
     else Seq(
       compilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.full),
       compilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
     )
   },
   scalacOptions ++= {
-    if (isDotty.value) Seq("-source:3.0-migration")
+    if (ScalaArtifacts.isScala3(scalaVersion.value)) Seq("-source:3.0-migration")
     else Seq()
   },
   Compile / doc / sources := {
     val old = (Compile / doc / sources).value
-    if (isDotty.value)
+    if (ScalaArtifacts.isScala3(scalaVersion.value))
       Seq()
     else
       old
