@@ -5,7 +5,7 @@ import cats.syntax.all._
 import cats.effect._
 import org.http4s._
 import org.http4s.implicits._
-import io.chrisdavenport.vault._
+import org.typelevel.vault._
 import org.http4s.session._
 import org.http4s.session.syntax.all._
 import VaultSessionMiddleware.VaultSessionReset

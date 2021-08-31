@@ -5,8 +5,8 @@ import cats.syntax.all._
 import cats.data._
 import org.http4s._
 import org.http4s.headers.`Set-Cookie`
-import io.chrisdavenport.vault.Vault
-import io.chrisdavenport.vault.Key
+import org.typelevel.vault.Vault
+import org.typelevel.vault.Key
 
 object VaultSessionMiddleware {
   case object VaultSessionReset {

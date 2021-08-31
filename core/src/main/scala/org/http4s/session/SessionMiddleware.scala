@@ -21,18 +21,18 @@ object SessionMiddleware {
   )(sessionApp: SessionRoutes[F, Option[A]]): HttpRoutes[F] = {
     val deleteCookie: `Set-Cookie` = {
       `Set-Cookie`(
-        ResponseCookie(sessionIdentifierName, "deleted", domain = domain, httpOnly = httpOnly, secure = secure, path = path, sameSite = sameSite, expires = Some(HttpDate.Epoch), maxAge = Some(-1L))
+        ResponseCookie(sessionIdentifierName, "deleted", domain = domain, httpOnly = httpOnly, secure = secure, path = path, sameSite = sameSite.some, expires = Some(HttpDate.Epoch), maxAge = Some(-1L))
       )
     }
     def sessionCookie(id: SessionIdentifier): F[`Set-Cookie`] = {
       expiration match {
         case ExpirationManagement.Static(maxAge, expires) => `Set-Cookie`(
-          ResponseCookie(sessionIdentifierName, id.value, domain = domain, httpOnly = httpOnly, secure = secure, path = path, sameSite = sameSite, maxAge = maxAge, expires = expires)
+          ResponseCookie(sessionIdentifierName, id.value, domain = domain, httpOnly = httpOnly, secure = secure, path = path, sameSite = sameSite.some, maxAge = maxAge, expires = expires)
         ).pure[F]
         case e@ExpirationManagement.Dynamic(fromNow) => HttpDate.current[F](Functor[F], e.C).flatMap{ now => 
           fromNow(now).map{
             case ExpirationManagement.Static(maxAge, expires) => `Set-Cookie`(
-              ResponseCookie(sessionIdentifierName, id.value, domain = domain, httpOnly = httpOnly, secure = secure, path = path, sameSite = sameSite, maxAge = maxAge, expires = expires)
+              ResponseCookie(sessionIdentifierName, id.value, domain = domain, httpOnly = httpOnly, secure = secure, path = path, sameSite = sameSite.some, maxAge = maxAge, expires = expires)
             )
           }
         }
@@ -99,12 +99,12 @@ object SessionMiddleware {
       def sessionCookie(id: SessionIdentifier): F[`Set-Cookie`] = {
         expiration match {
           case ExpirationManagement.Static(maxAge, expires) => `Set-Cookie`(
-            ResponseCookie(sessionIdentifierName, id.value, domain = domain, httpOnly = httpOnly, secure = secure, path = path, sameSite = sameSite, maxAge = maxAge, expires = expires)
+            ResponseCookie(sessionIdentifierName, id.value, domain = domain, httpOnly = httpOnly, secure = secure, path = path, sameSite = sameSite.some, maxAge = maxAge, expires = expires)
           ).pure[F]
           case e@ExpirationManagement.Dynamic(fromNow) => HttpDate.current[F](Functor[F], e.C).flatMap{ now => 
             fromNow(now).map{
               case ExpirationManagement.Static(maxAge, expires) => `Set-Cookie`(
-                ResponseCookie(sessionIdentifierName, id.value, domain = domain, httpOnly = httpOnly, secure = secure, path = path, sameSite = sameSite, maxAge = maxAge, expires = expires)
+                ResponseCookie(sessionIdentifierName, id.value, domain = domain, httpOnly = httpOnly, secure = secure, path = path, sameSite = sameSite.some, maxAge = maxAge, expires = expires)
               )
             }
           }
