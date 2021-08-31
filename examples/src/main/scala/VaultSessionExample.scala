@@ -20,8 +20,8 @@ object VaultSessionExample extends IOApp {
 
   def server[F[_]: Concurrent: Timer: ContextShift]: Resource[F, Unit] = {
     for {
-      store <- Resource.liftF(SessionStore.create[F, Vault]())
-      key <- Resource.liftF(Key.newKey[F, PageViews])
+      store <- Resource.eval(SessionStore.create[F, Vault]())
+      key <- Resource.eval(Key.newKey[F, PageViews])
       routes = VaultSessionMiddleware.impl(store, secure = false)(app[F](key))
 
       _ <- EmberServerBuilder.default[F]
