@@ -9,6 +9,7 @@ import org.http4s.session._
 import org.http4s.session.syntax.all._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.ember.server.EmberServerBuilder
+import cats.effect.Temporal
 
 object PersonalViewCounter extends IOApp {
 
@@ -16,7 +17,7 @@ object PersonalViewCounter extends IOApp {
     server[IO].use(_ => IO.never).as(ExitCode.Success)
   }
 
-  def server[F[_]: Concurrent: Timer: ContextShift]: Resource[F, Unit] = {
+  def server[F[_]: Concurrent: Temporal: ContextShift]: Resource[F, Unit] = {
     for {
       store <- Resource.eval(SessionStore.create[F, PageViews]())
       routes = SessionMiddleware.optional(store, secure = false)(app)
