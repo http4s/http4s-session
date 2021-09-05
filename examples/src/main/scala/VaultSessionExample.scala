@@ -5,7 +5,7 @@ import cats.syntax.all._
 import cats.effect._
 import org.http4s._
 import org.http4s.implicits._
-import io.chrisdavenport.vault._
+import org.typelevel.vault._
 import org.http4s.session._
 import org.http4s.session.syntax.all._
 import VaultSessionMiddleware.VaultSessionReset
@@ -20,8 +20,8 @@ object VaultSessionExample extends IOApp {
 
   def server[F[_]: Concurrent: Timer: ContextShift]: Resource[F, Unit] = {
     for {
-      store <- Resource.liftF(SessionStore.create[F, Vault]())
-      key <- Resource.liftF(Key.newKey[F, PageViews])
+      store <- Resource.eval(SessionStore.create[F, Vault]())
+      key <- Resource.eval(Key.newKey[F, PageViews])
       routes = VaultSessionMiddleware.impl(store, secure = false)(app[F](key))
 
       _ <- EmberServerBuilder.default[F]
