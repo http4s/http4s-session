@@ -1,6 +1,6 @@
 package org.http4s.session
 
-import io.chrisdavenport.vault._
+import org.typelevel.vault._
 import io.chrisdavenport.random._
 import io.chrisdavenport.mapref._
 import io.chrisdavenport.mapref.implicits._

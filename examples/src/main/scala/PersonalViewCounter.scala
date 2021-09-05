@@ -18,7 +18,7 @@ object PersonalViewCounter extends IOApp {
 
   def server[F[_]: Concurrent: Timer: ContextShift]: Resource[F, Unit] = {
     for {
-      store <- Resource.liftF(SessionStore.create[F, PageViews]())
+      store <- Resource.eval(SessionStore.create[F, PageViews]())
       routes = SessionMiddleware.optional(store, secure = false)(app)
 
       _ <- EmberServerBuilder.default[F]
