@@ -4,7 +4,7 @@ Http4s Session Management
 ## [Head on over to the microsite](https://http4s.github.io/http4s-session)
 ## Quick Start
 
-To use http4s-session in an existing SBT project with Scala 2.11 or a later version, add the following dependencies to your
+To use http4s-session in an existing SBT project with Scala 2.13 or a later version, add the following dependencies to your
 `build.sbt` depending on your needs:
 
 ```scala
