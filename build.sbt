@@ -26,8 +26,13 @@ def rubySetupSteps(cond: Option[String]) = Seq(
 ThisBuild / githubWorkflowBuildPreamble ++=
   rubySetupSteps(Some(Scala213Cond))
 
-ThisBuild / githubWorkflowBuild := Seq(WorkflowStep.Sbt(List("test", "mimaReportBinaryIssues")),
-                                       WorkflowStep.Sbt(List("site/makeMicrosite"), cond = Some(Scala213Cond))
+ThisBuild / githubWorkflowBuild := Seq(
+  WorkflowStep
+    .Sbt(List("scalafmtCheckAll", "scalafmtSbtCheck"), name = Some("Check formatting")),
+  WorkflowStep.Sbt(List("mimaReportBinaryIssues"), name = Some("Check binary issues")),
+  WorkflowStep.Sbt(List("Test/compile"), name = Some("Compile")),
+  WorkflowStep.Sbt(List("test"), name = Some("Run tests")),
+  WorkflowStep.Sbt(List("site/makeMicrosite"), name = Some("Build the Microsite"), cond = Some(Scala213Cond))
 )
 
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
