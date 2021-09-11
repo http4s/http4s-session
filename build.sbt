@@ -10,28 +10,25 @@ ThisBuild / githubWorkflowArtifactUpload := false
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
 def rubySetupSteps(cond: Option[String]) = Seq(
-  WorkflowStep.Use(
-    "ruby", "setup-ruby", "v1",
-    name = Some("Setup Ruby"),
-    params = Map("ruby-version" -> "2.6.0"),
-    cond = cond),
-
-  WorkflowStep.Run(
-    List(
-      "gem install saas",
-      "gem install jekyll -v 3.2.1"),
-    name = Some("Install microsite dependencies"),
-    cond = cond))
+  WorkflowStep.Use("ruby",
+                   "setup-ruby",
+                   "v1",
+                   name = Some("Setup Ruby"),
+                   params = Map("ruby-version" -> "2.6.0"),
+                   cond = cond
+  ),
+  WorkflowStep.Run(List("gem install saas", "gem install jekyll -v 3.2.1"),
+                   name = Some("Install microsite dependencies"),
+                   cond = cond
+  )
+)
 
 ThisBuild / githubWorkflowBuildPreamble ++=
   rubySetupSteps(Some(Scala213Cond))
 
-ThisBuild / githubWorkflowBuild := Seq(
-  WorkflowStep.Sbt(List("test", "mimaReportBinaryIssues")),
-
-  WorkflowStep.Sbt(
-    List("site/makeMicrosite"),
-    cond = Some(Scala213Cond)))
+ThisBuild / githubWorkflowBuild := Seq(WorkflowStep.Sbt(List("test", "mimaReportBinaryIssues")),
+                                       WorkflowStep.Sbt(List("site/makeMicrosite"), cond = Some(Scala213Cond))
+)
 
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
 
@@ -50,14 +47,15 @@ ThisBuild / githubWorkflowPublish := Seq(
       "PGP_PASSPHRASE" -> "${{ secrets.PGP_PASSPHRASE }}",
       "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
       "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
-      "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}")),
+      "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}"
+    )
+  ),
   WorkflowStep.Use("christopherdavenport", "create-ghpages-ifnotexists", "v1"),
   WorkflowStep.Sbt(
     List("site/publishMicrosite"),
     name = Some("Publish microsite")
   )
 )
-
 
 val catsV = "2.6.1"
 val catsEffectV = "2.5.3"
@@ -75,18 +73,21 @@ val kindProjectorV = "0.13.2"
 val betterMonadicForV = "0.3.1"
 
 // Projects
-lazy val `http4s-session` = project.in(file("."))
+lazy val `http4s-session` = project
+  .in(file("."))
   .disablePlugins(MimaPlugin)
   .enablePlugins(NoPublishPlugin)
   .aggregate(core, examples)
 
-lazy val core = project.in(file("core"))
+lazy val core = project
+  .in(file("core"))
   .settings(commonSettings)
   .settings(
     name := "http4s-session"
   )
 
-lazy val examples = project.in(file("examples"))
+lazy val examples = project
+  .in(file("examples"))
   .disablePlugins(MimaPlugin)
   .enablePlugins(NoPublishPlugin)
   .settings(commonSettings)
@@ -94,21 +95,22 @@ lazy val examples = project.in(file("examples"))
   .settings(
     name := "http4s-session-examples",
     libraryDependencies ++= Seq(
-      "org.http4s"                  %% "http4s-dsl"                 % http4sV,
-      "org.http4s"                  %% "http4s-ember-server"        % http4sV,
-      "org.http4s"                  %% "http4s-ember-client"        % http4sV,
-      "org.http4s"                  %% "http4s-circe"               % http4sV,
+      "org.http4s" %% "http4s-dsl" % http4sV,
+      "org.http4s" %% "http4s-ember-server" % http4sV,
+      "org.http4s" %% "http4s-ember-client" % http4sV,
+      "org.http4s" %% "http4s-circe" % http4sV
     )
   )
 
-lazy val site = project.in(file("site"))
+lazy val site = project
+  .in(file("site"))
   .disablePlugins(MimaPlugin)
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(MdocPlugin)
   .enablePlugins(NoPublishPlugin)
   .settings(commonSettings)
   .dependsOn(core)
-  .settings{
+  .settings {
     import microsites._
     Seq(
       micrositeName := "http4s-session",
@@ -134,8 +136,15 @@ lazy val site = project.in(file("site"))
       micrositePushSiteWith := GitHub4s,
       micrositeGithubToken := sys.env.get("GITHUB_TOKEN"),
       micrositeExtraMdFiles := Map(
-          file("CODE_OF_CONDUCT.md")  -> ExtraMdFileConfig("code-of-conduct.md",   "page", Map("title" -> "code of conduct",   "section" -> "code of conduct",   "position" -> "100")),
-          file("LICENSE")             -> ExtraMdFileConfig("license.md",   "page", Map("title" -> "license",   "section" -> "license",   "position" -> "101"))
+        file("CODE_OF_CONDUCT.md") -> ExtraMdFileConfig(
+          "code-of-conduct.md",
+          "page",
+          Map("title" -> "code of conduct", "section" -> "code of conduct", "position" -> "100")
+        ),
+        file("LICENSE") -> ExtraMdFileConfig("license.md",
+                                             "page",
+                                             Map("title" -> "license", "section" -> "license", "position" -> "101")
+        )
       )
     )
   }
@@ -145,10 +154,11 @@ lazy val commonSettings = Seq(
   testFrameworks += new TestFramework("munit.Framework"),
   libraryDependencies ++= {
     if (ScalaArtifacts.isScala3(scalaVersion.value)) Seq.empty
-    else Seq(
-      compilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.full),
-      compilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
-    )
+    else
+      Seq(
+        compilerPlugin(("org.typelevel" % "kind-projector" % kindProjectorV).cross(CrossVersion.full)),
+        compilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV)
+      )
   },
   scalacOptions ++= {
     if (ScalaArtifacts.isScala3(scalaVersion.value)) Seq("-source:3.0-migration")
@@ -161,38 +171,38 @@ lazy val commonSettings = Seq(
     else
       old
   },
-
   libraryDependencies ++= Seq(
-    "org.typelevel"               %% "cats-core"                  % catsV,
-
-    "org.typelevel"               %% "cats-effect"                % catsEffectV,
-
-    "co.fs2"                      %% "fs2-core"                   % fs2V,
-    "co.fs2"                      %% "fs2-io"                     % fs2V,
-
-    "io.chrisdavenport"           %% "random"                     % "0.0.2",
-    "io.chrisdavenport"           %% "mapref"                     % "0.1.1",
-    "org.http4s"                  %% "http4s-core"                % http4sV,
-
-    "org.typelevel"               %%% "munit-cats-effect-2"        % munitCatsEffectV         % Test,
-
+    "org.typelevel" %% "cats-core" % catsV,
+    "org.typelevel" %% "cats-effect" % catsEffectV,
+    "co.fs2" %% "fs2-core" % fs2V,
+    "co.fs2" %% "fs2-io" % fs2V,
+    "io.chrisdavenport" %% "random" % "0.0.2",
+    "io.chrisdavenport" %% "mapref" % "0.1.1",
+    "org.http4s" %% "http4s-core" % http4sV,
+    "org.typelevel" %%% "munit-cats-effect-2" % munitCatsEffectV % Test
   )
 )
 
 // General Settings
-inThisBuild(List(
-  organization := "org.http4s",
-  developers := List(
-    Developer("ChristopherDavenport", "Christopher Davenport", "chris@christopherdavenport.tech", url("https://github.com/ChristopherDavenport"))
-  ),
-
-  homepage := Some(url("https://github.com/http4s/http4s-session")),
-  licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-
-  pomIncludeRepository := { _ => false},
-  scalacOptions in (Compile, doc) ++= Seq(
+inThisBuild(
+  List(
+    organization := "org.http4s",
+    developers := List(
+      Developer("ChristopherDavenport",
+                "Christopher Davenport",
+                "chris@christopherdavenport.tech",
+                url("https://github.com/ChristopherDavenport")
+      )
+    ),
+    homepage := Some(url("https://github.com/http4s/http4s-session")),
+    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+    pomIncludeRepository := { _ => false },
+    scalacOptions in (Compile, doc) ++= Seq(
       "-groups",
-      "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
-      "-doc-source-url", "https://github.com/http4s/http4s-session/blob/v" + version.value + "€{FILE_PATH}.scala"
+      "-sourcepath",
+      (baseDirectory in LocalRootProject).value.getAbsolutePath,
+      "-doc-source-url",
+      "https://github.com/http4s/http4s-session/blob/v" + version.value + "€{FILE_PATH}.scala"
+    )
   )
-))
+)
