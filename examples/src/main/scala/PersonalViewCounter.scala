@@ -18,10 +18,11 @@ object PersonalViewCounter extends IOApp {
 
   def server[F[_]: Concurrent: Timer: ContextShift]: Resource[F, Unit] = {
     for {
-      store <- Resource.liftF(SessionStore.create[F, PageViews]())
+      store <- Resource.eval(SessionStore.create[F, PageViews]())
       routes = SessionMiddleware.optional(store, secure = false)(app)
 
-      _ <- EmberServerBuilder.default[F]
+      _ <- EmberServerBuilder
+        .default[F]
         .withHttpApp(routes.orNotFound)
         .build
     } yield ()
@@ -30,16 +31,16 @@ object PersonalViewCounter extends IOApp {
   case class PageViews(int: Int)
 
   def app[F[_]: Monad]: SessionRoutes[F, Option[PageViews]] = {
-    val dsl = new Http4sDsl[F]{}; import dsl._
-    SessionRoutes.of{
-      case GET -> Root / "reset" as _ => 
+    val dsl = new Http4sDsl[F] {}; import dsl._
+    SessionRoutes.of {
+      case GET -> Root / "reset" as _ =>
         Ok("Reset PageViews").withContext(None)
-      case GET -> Root / "passthrough" as initial => 
+      case GET -> Root / "passthrough" as initial =>
         Ok("Hit Passthrough").withContext(initial)
-      case GET -> _ as Some(views) => 
+      case GET -> _ as Some(views) =>
         Ok(s"You've been here ${views.int} time")
           .withContext(views.copy(views.int + 1).some)
-      case GET -> _ as None =>  Ok("You've never been here before").withContext(PageViews(1).some)
+      case GET -> _ as None => Ok("You've never been here before").withContext(PageViews(1).some)
     }
   }
 
