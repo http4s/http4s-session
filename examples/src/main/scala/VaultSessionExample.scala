@@ -24,7 +24,8 @@ object VaultSessionExample extends IOApp {
       key <- Resource.eval(Key.newKey[F, PageViews])
       routes = VaultSessionMiddleware.impl(store, secure = false)(app[F](key))
 
-      _ <- EmberServerBuilder.default[F]
+      _ <- EmberServerBuilder
+        .default[F]
         .withHttpApp(routes.orNotFound)
         .build
     } yield ()
@@ -33,17 +34,19 @@ object VaultSessionExample extends IOApp {
   case class PageViews(int: Int)
 
   def app[F[_]: Sync](key: Key[PageViews]): HttpRoutes[F] = {
-    val dsl = new Http4sDsl[F]{}; import dsl._
-    HttpRoutes.of{
-      case GET -> Root / "reset" => 
+    val dsl = new Http4sDsl[F] {}; import dsl._
+    HttpRoutes.of {
+      case GET -> Root / "reset" =>
         Ok("Reset PageViews")
           .map(_.withAttribute(VaultSessionReset.key, VaultSessionReset))
-      case req@GET -> _  => 
-        req.attributes.lookup(key).fold(
-          Ok("You've never been here before").map(_.withAttribute(key, PageViews(1)))
-        )(pageViews => 
-          Ok(s"You've been here ${pageViews.int} time").map(_.withAttribute(key, PageViews(pageViews.int + 1)))
-        )
+      case req @ GET -> _ =>
+        req.attributes
+          .lookup(key)
+          .fold(
+            Ok("You've never been here before").map(_.withAttribute(key, PageViews(1)))
+          )(pageViews =>
+            Ok(s"You've been here ${pageViews.int} time").map(_.withAttribute(key, PageViews(pageViews.int + 1)))
+          )
     }
   }
 
