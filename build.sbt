@@ -65,13 +65,13 @@ ThisBuild / githubWorkflowPublish := Seq(
 val catsV = "2.6.1"
 val catsEffectV = "2.5.4"
 // val shapelessV = "2.3.3"
-val fs2V = "2.5.9"
-val http4sV = "0.22.5"
+val fs2V = "2.5.10"
+val http4sV = "0.22.7"
 val circeV = "0.13.0"
 val doobieV = "0.9.4"
 val log4catsV = "1.1.1"
 
-val munitCatsEffectV = "1.0.5"
+val munitCatsEffectV = "1.0.6"
 // val specs2V = "4.10.6"
 
 val kindProjectorV = "0.13.2"
