@@ -71,7 +71,7 @@ val circeV = "0.13.0"
 val doobieV = "0.9.4"
 val log4catsV = "1.1.1"
 
-val munitCatsEffectV = "1.0.6"
+val munitCatsEffectV = "1.0.7"
 // val specs2V = "4.10.6"
 
 val kindProjectorV = "0.13.2"
