@@ -10,12 +10,11 @@ ThisBuild / githubWorkflowArtifactUpload := false
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
 def rubySetupSteps(cond: Option[String]) = Seq(
-  WorkflowStep.Use("ruby",
-                   "setup-ruby",
-                   "v1",
-                   name = Some("Setup Ruby"),
-                   params = Map("ruby-version" -> "2.6.0"),
-                   cond = cond
+  WorkflowStep.Use(
+    UseRef.Public("ruby", "setup-ruby", "v1"),
+    name = Some("Setup Ruby"),
+    params = Map("ruby-version" -> "2.6.0"),
+    cond = cond
   ),
   WorkflowStep.Run(List("gem install saas", "gem install jekyll -v 3.2.1"),
                    name = Some("Install microsite dependencies"),
@@ -42,7 +41,7 @@ ThisBuild / githubWorkflowPublishTargetBranches :=
   Seq(RefPredicate.StartsWith(Ref.Tag("v")), RefPredicate.Equals(Ref.Branch("main")))
 
 ThisBuild / githubWorkflowPublishPreamble ++=
-  WorkflowStep.Use("olafurpg", "setup-gpg", "v3") +: rubySetupSteps(None)
+  WorkflowStep.Use(UseRef.Public("olafurpg", "setup-gpg", "v3")) +: rubySetupSteps(None)
 
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(
@@ -55,7 +54,7 @@ ThisBuild / githubWorkflowPublish := Seq(
       "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}"
     )
   ),
-  WorkflowStep.Use("christopherdavenport", "create-ghpages-ifnotexists", "v1"),
+  WorkflowStep.Use(UseRef.Public("christopherdavenport", "create-ghpages-ifnotexists", "v1")),
   WorkflowStep.Sbt(
     List("site/publishMicrosite"),
     name = Some("Publish microsite")
