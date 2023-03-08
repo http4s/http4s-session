@@ -38,7 +38,14 @@ lazy val core = project
   .in(file("core"))
   .settings(commonSettings)
   .settings(
-    name := "http4s-session"
+    name := "http4s-session",
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-core" % catsV,
+      "org.typelevel" %% "cats-effect" % catsEffectV,
+      "io.chrisdavenport" %% "random" % "0.0.2",
+      "io.chrisdavenport" %% "mapref" % "0.1.1",
+      "org.http4s" %% "http4s-core" % http4sV
+    )
   )
 
 lazy val examples = project
@@ -50,9 +57,7 @@ lazy val examples = project
     name := "http4s-session-examples",
     libraryDependencies ++= Seq(
       "org.http4s" %% "http4s-dsl" % http4sV,
-      "org.http4s" %% "http4s-ember-server" % http4sV,
-      "org.http4s" %% "http4s-ember-client" % http4sV,
-      "org.http4s" %% "http4s-circe" % http4sV
+      "org.http4s" %% "http4s-ember-server" % http4sV
     )
   )
 
@@ -85,13 +90,6 @@ lazy val commonSettings = Seq(
       old
   },
   libraryDependencies ++= Seq(
-    "org.typelevel" %% "cats-core" % catsV,
-    "org.typelevel" %% "cats-effect" % catsEffectV,
-    "co.fs2" %% "fs2-core" % fs2V,
-    "co.fs2" %% "fs2-io" % fs2V,
-    "io.chrisdavenport" %% "random" % "0.0.2",
-    "io.chrisdavenport" %% "mapref" % "0.1.1",
-    "org.http4s" %% "http4s-core" % http4sV,
     "org.typelevel" %%% "munit-cats-effect-2" % munitCatsEffectV % Test
   )
 )
