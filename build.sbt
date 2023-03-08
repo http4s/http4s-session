@@ -12,7 +12,7 @@ ThisBuild / developers := List(
 )
 ThisBuild / tlSitePublishBranch := Some("main")
 ThisBuild / homepage := Some(url("https://github.com/http4s/http4s-session"))
-ThisBuild / licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
+ThisBuild / licenses := List("MIT" -> url("http://opensource.org/licenses/MIT"))
 
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
@@ -56,9 +56,8 @@ lazy val examples = project
     )
   )
 
-lazy val site = project
+lazy val docs = project
   .in(file("site"))
-  .enablePlugins(NoPublishPlugin)
   .settings(commonSettings)
   .dependsOn(core)
   .enablePlugins(TypelevelSitePlugin)
