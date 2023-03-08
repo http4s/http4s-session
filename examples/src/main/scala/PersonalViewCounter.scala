@@ -24,7 +24,6 @@ package examples
 import cats._
 import cats.syntax.all._
 import cats.effect._
-import org.http4s._
 import org.http4s.implicits._
 import org.http4s.session._
 import org.http4s.session.syntax.all._

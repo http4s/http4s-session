@@ -22,7 +22,6 @@
 package org.http4s.session
 
 import munit.CatsEffectSuite
-import cats.effect._
 
 class MainSpec extends CatsEffectSuite {
 

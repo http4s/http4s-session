@@ -21,10 +21,8 @@
 
 package org.http4s.session
 
-import org.typelevel.vault._
 import io.chrisdavenport.random._
 import io.chrisdavenport.mapref._
-import io.chrisdavenport.mapref.implicits._
 import cats._
 import cats.syntax.all._
 import cats.effect._

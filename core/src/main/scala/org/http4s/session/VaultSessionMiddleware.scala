@@ -25,17 +25,16 @@ import cats._
 import cats.syntax.all._
 import cats.data._
 import org.http4s._
-import org.http4s.headers.`Set-Cookie`
 import org.typelevel.vault.Vault
 import org.typelevel.vault.Key
 
 object VaultSessionMiddleware {
   case object VaultSessionReset {
-    val key = Key.newKey[cats.effect.SyncIO, VaultSessionReset.type].unsafeRunSync
+    val key = Key.newKey[cats.effect.SyncIO, VaultSessionReset.type].unsafeRunSync()
   }
   case class VaultKeysToRemove(l: List[Key[_]])
   object VaultKeysToRemove {
-    val key = Key.newKey[cats.effect.SyncIO, VaultKeysToRemove].unsafeRunSync
+    val key = Key.newKey[cats.effect.SyncIO, VaultKeysToRemove].unsafeRunSync()
   }
 
   def impl[F[_]: Monad, A](
@@ -83,7 +82,7 @@ object VaultSessionMiddleware {
                                   resp.withAttributes(outContext)
                   )
                 )
-            )(reset => ContextResponse(None, resp.withAttributes(outContext)))
+            )(_ => ContextResponse(None, resp.withAttributes(outContext)))
         }
     }
   }
