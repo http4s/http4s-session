@@ -21,12 +21,12 @@
 
 package org.http4s.session
 
-import io.chrisdavenport.random._
 import cats._
 import cats.syntax.all._
+import io.chrisdavenport.random._
 import org.http4s._
 
-case class SessionIdentifier(value: String)
+final case class SessionIdentifier(value: String)
 object SessionIdentifier {
   import java.util.Base64
   private val b64 = Base64.getEncoder()

@@ -22,8 +22,8 @@
 package org.http4s.session
 
 import cats._
-import cats.syntax.all._
 import cats.data._
+import cats.syntax.all._
 import org.http4s._
 import org.http4s.headers.`Set-Cookie`
 
@@ -255,8 +255,8 @@ object SessionMiddleware {
    */
   sealed trait ExpirationManagement[F[_]]
   object ExpirationManagement {
-    case class Static[F[_]](maxAge: Option[Long], expires: Option[HttpDate]) extends ExpirationManagement[F]
-    case class Dynamic[F[_]](fromNow: HttpDate => F[Static[F]])(implicit val C: cats.effect.Clock[F])
+    final case class Static[F[_]](maxAge: Option[Long], expires: Option[HttpDate]) extends ExpirationManagement[F]
+    final case class Dynamic[F[_]](fromNow: HttpDate => F[Static[F]])(implicit val C: cats.effect.Clock[F])
         extends ExpirationManagement[F]
   }
 

@@ -22,17 +22,18 @@
 package org.http4s.session
 
 import cats._
-import cats.syntax.all._
 import cats.data._
+import cats.syntax.all._
 import org.http4s._
-import org.typelevel.vault.Vault
 import org.typelevel.vault.Key
+import org.typelevel.vault.Vault
 
 object VaultSessionMiddleware {
   case object VaultSessionReset {
     val key = Key.newKey[cats.effect.SyncIO, VaultSessionReset.type].unsafeRunSync()
   }
-  case class VaultKeysToRemove(l: List[Key[_]])
+
+  final case class VaultKeysToRemove(l: List[Key[_]])
   object VaultKeysToRemove {
     val key = Key.newKey[cats.effect.SyncIO, VaultKeysToRemove].unsafeRunSync()
   }

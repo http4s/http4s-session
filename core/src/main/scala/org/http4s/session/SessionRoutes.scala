@@ -23,8 +23,8 @@ package org.http4s.session
 
 import cats._
 import cats.data._
-import org.http4s._
 import cats.syntax.all._
+import org.http4s._
 
 object SessionRoutes {
 

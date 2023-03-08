@@ -21,11 +21,11 @@
 
 package org.http4s.session
 
-import io.chrisdavenport.random._
-import io.chrisdavenport.mapref._
 import cats._
-import cats.syntax.all._
 import cats.effect._
+import cats.syntax.all._
+import io.chrisdavenport.mapref._
+import io.chrisdavenport.random._
 
 trait SessionStore[F[_], A] {
 

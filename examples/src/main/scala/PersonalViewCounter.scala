@@ -22,13 +22,13 @@
 package examples
 
 import cats._
-import cats.syntax.all._
 import cats.effect._
+import cats.syntax.all._
+import org.http4s.dsl.Http4sDsl
+import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.implicits._
 import org.http4s.session._
 import org.http4s.session.syntax.all._
-import org.http4s.dsl.Http4sDsl
-import org.http4s.ember.server.EmberServerBuilder
 
 object PersonalViewCounter extends IOApp {
 
@@ -48,7 +48,7 @@ object PersonalViewCounter extends IOApp {
     } yield ()
   }
 
-  case class PageViews(int: Int)
+  final case class PageViews(int: Int)
 
   def app[F[_]: Monad]: SessionRoutes[F, Option[PageViews]] = {
     val dsl = new Http4sDsl[F] {}; import dsl._

@@ -21,15 +21,16 @@
 
 package examples
 
-import cats.syntax.all._
 import cats.effect._
+import cats.syntax.all._
 import org.http4s._
-import org.http4s.implicits._
-import org.typelevel.vault._
-import org.http4s.session._
-import VaultSessionMiddleware.VaultSessionReset
 import org.http4s.dsl.Http4sDsl
 import org.http4s.ember.server.EmberServerBuilder
+import org.http4s.implicits._
+import org.http4s.session._
+import org.typelevel.vault._
+
+import VaultSessionMiddleware.VaultSessionReset
 
 object VaultSessionExample extends IOApp {
 
@@ -50,7 +51,7 @@ object VaultSessionExample extends IOApp {
     } yield ()
   }
 
-  case class PageViews(int: Int)
+  final case class PageViews(int: Int)
 
   def app[F[_]: Sync](key: Key[PageViews]): HttpRoutes[F] = {
     val dsl = new Http4sDsl[F] {}; import dsl._
