@@ -65,7 +65,7 @@ lazy val docs = project
   .in(file("site"))
   .settings(commonSettings)
   .dependsOn(core)
-  .enablePlugins(TypelevelSitePlugin)
+  .enablePlugins(Http4sOrgSitePlugin)
 
 // General Settings
 lazy val commonSettings = Seq(
