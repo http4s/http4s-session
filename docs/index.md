@@ -10,6 +10,6 @@ To use http4s-session in an existing SBT project with Scala 2.13 or a later vers
 
 ```scala
 libraryDependencies ++= Seq(
-  "org.http4s" %% "http4s-session" % "<version>"
+  "org.http4s" %% "http4s-session" % "@VERSION@"
 )
 ```
