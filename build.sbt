@@ -30,7 +30,6 @@ val betterMonadicForV = "0.3.1"
 // Projects
 lazy val `http4s-session` = project
   .in(file("."))
-  .disablePlugins(MimaPlugin)
   .enablePlugins(NoPublishPlugin)
   .aggregate(core, examples)
 
