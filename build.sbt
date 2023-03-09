@@ -36,7 +36,6 @@ lazy val `http4s-session` = project
 
 lazy val core = project
   .in(file("core"))
-  .settings(commonSettings)
   .settings(
     name := "http4s-session",
     libraryDependencies ++= Seq(
@@ -44,52 +43,25 @@ lazy val core = project
       "org.typelevel" %% "cats-effect" % catsEffectV,
       "io.chrisdavenport" %% "random" % "0.0.2",
       "io.chrisdavenport" %% "mapref" % "0.1.1",
-      "org.http4s" %% "http4s-core" % http4sV
+      "org.http4s" %% "http4s-core" % http4sV,
+      "org.typelevel" %%% "munit-cats-effect-2" % munitCatsEffectV % Test
     )
   )
 
 lazy val examples = project
   .in(file("examples"))
   .enablePlugins(NoPublishPlugin)
-  .settings(commonSettings)
   .dependsOn(core)
   .settings(
     name := "http4s-session-examples",
     libraryDependencies ++= Seq(
       "org.http4s" %% "http4s-dsl" % http4sV,
-      "org.http4s" %% "http4s-ember-server" % http4sV
+      "org.http4s" %% "http4s-ember-server" % http4sV,
+      "org.typelevel" %%% "munit-cats-effect-2" % munitCatsEffectV % Test
     )
   )
 
 lazy val docs = project
   .in(file("site"))
-  .settings(commonSettings)
   .dependsOn(core)
   .enablePlugins(Http4sOrgSitePlugin)
-
-// General Settings
-lazy val commonSettings = Seq(
-  testFrameworks += new TestFramework("munit.Framework"),
-  libraryDependencies ++= {
-    if (ScalaArtifacts.isScala3(scalaVersion.value)) Seq.empty
-    else
-      Seq(
-        compilerPlugin(("org.typelevel" % "kind-projector" % kindProjectorV).cross(CrossVersion.full)),
-        compilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV)
-      )
-  },
-  scalacOptions ++= {
-    if (ScalaArtifacts.isScala3(scalaVersion.value)) Seq("-source:3.0-migration")
-    else Seq()
-  },
-  Compile / doc / sources := {
-    val old = (Compile / doc / sources).value
-    if (ScalaArtifacts.isScala3(scalaVersion.value))
-      Seq()
-    else
-      old
-  },
-  libraryDependencies ++= Seq(
-    "org.typelevel" %%% "munit-cats-effect-2" % munitCatsEffectV % Test
-  )
-)
