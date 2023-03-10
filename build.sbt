@@ -17,15 +17,10 @@ ThisBuild / licenses := List("MIT" -> url("http://opensource.org/licenses/MIT"))
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
 val catsV = "2.9.0"
-val catsEffectV = "2.5.5"
-val fs2V = "2.5.11"
-val http4sV = "0.22.15"
-val circeV = "0.13.0"
-val doobieV = "0.9.4"
-val log4catsV = "1.1.1"
-val munitCatsEffectV = "1.0.7"
-val kindProjectorV = "0.13.2"
-val betterMonadicForV = "0.3.1"
+val catsEffectV = "3.4.8"
+val fs2V = "3.6.1"
+val http4sV = "0.23.18"
+val munitCatsEffectV = "2.0.0-M3"
 
 // Projects
 lazy val `http4s-session` = project
@@ -40,10 +35,9 @@ lazy val core = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-core" % catsV,
       "org.typelevel" %% "cats-effect" % catsEffectV,
-      "io.chrisdavenport" %% "random" % "0.0.2",
-      "io.chrisdavenport" %% "mapref" % "0.1.1",
+      "io.chrisdavenport" %% "mapref" % "0.2.1",
       "org.http4s" %% "http4s-core" % http4sV,
-      "org.typelevel" %%% "munit-cats-effect-2" % munitCatsEffectV % Test
+      "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectV % Test
     )
   )
 
@@ -56,7 +50,7 @@ lazy val examples = project
     libraryDependencies ++= Seq(
       "org.http4s" %% "http4s-dsl" % http4sV,
       "org.http4s" %% "http4s-ember-server" % http4sV,
-      "org.typelevel" %%% "munit-cats-effect-2" % munitCatsEffectV % Test
+      "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectV % Test
     )
   )
 
