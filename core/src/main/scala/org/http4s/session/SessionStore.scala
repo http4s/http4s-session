@@ -23,9 +23,10 @@ package org.http4s.session
 
 import cats._
 import cats.effect._
+import cats.effect.std.Random
+import cats.effect.std.SecureRandom
 import cats.syntax.all._
 import io.chrisdavenport.mapref._
-import io.chrisdavenport.random._
 
 trait SessionStore[F[_], A] {
 
@@ -37,12 +38,12 @@ trait SessionStore[F[_], A] {
 }
 object SessionStore {
 
-  def create[F[_]: Sync, A](
+  def create[F[_]: Async, A](
     numShards: Int = 4,
     numBytes: Int = 32 // The session ID length must be at least 128 bits (16 bytes)
     // numBytes is entropy / 2 SecureRandom
   ): F[SessionStore[F, A]] = for {
-    random <- Random.javaSecuritySecureRandom(numShards)
+    random <- SecureRandom.javaSecuritySecureRandom(numShards)
     ref <- MapRef.ofShardedImmutableMap[F, SessionIdentifier, A](numShards)
   } yield new MemorySessionStore[F, A](random, numBytes, ref)
 
