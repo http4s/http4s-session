@@ -38,7 +38,8 @@ lazy val core = project
       "io.chrisdavenport" %% "mapref" % "0.2.1",
       "org.http4s" %% "http4s-core" % http4sV,
       "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectV % Test
-    )
+    ),
+    mimaPreviousArtifacts ~= { _.filterNot(_.revision == "0.1.0") }
   )
 
 lazy val examples = project
