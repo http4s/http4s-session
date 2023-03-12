@@ -90,7 +90,7 @@ object SessionMiddleware {
           }
       }
     }
-    Kleisli { req: Request[F] =>
+    Kleisli { (req: Request[F]) =>
       val sessionId = SessionIdentifier.extract(req, sessionIdentifierName)
       val session = sessionId.flatTraverse(id => sessionStore.getSession(id))
 
@@ -154,7 +154,7 @@ object SessionMiddleware {
     mergeOnChanged: Option[MergeManagement[Option[A]]] =
       Option.empty[MergeManagement[Option[A]]] // Default Is to Override Uncoditionally with newer info
   )(sessionApp: SessionRoutes[F, A]): HttpRoutes[F] =
-    Kleisli { req: Request[F] =>
+    Kleisli { (req: Request[F]) =>
       val sessionId = SessionIdentifier.extract(req, sessionIdentifierName)
       val session = sessionId.flatTraverse(id => sessionStore.getSession(id))
 

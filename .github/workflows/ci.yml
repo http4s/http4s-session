@@ -29,8 +29,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        scala: [2.13.10]
+        scala: [2.13.10, 3.2.2]
         java: [temurin@8, temurin@11, temurin@17]
+        exclude:
+          - scala: 2.13.10
+            java: temurin@11
+          - scala: 2.13.10
+            java: temurin@17
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch (full)
@@ -146,7 +151,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.13.10]
+        scala: [3.2.2]
         java: [temurin@8]
     runs-on: ${{ matrix.os }}
     steps:
@@ -225,6 +230,16 @@ jobs:
           tar xf targets.tar
           rm targets.tar
 
+      - name: Download target directories (3.2.2)
+        uses: actions/download-artifact@v3
+        with:
+          name: target-${{ matrix.os }}-${{ matrix.java }}-3.2.2
+
+      - name: Inflate target directories (3.2.2)
+        run: |
+          tar xf targets.tar
+          rm targets.tar
+
       - name: Import signing key
         if: env.PGP_SECRET != '' && env.PGP_PASSPHRASE == ''
         run: echo $PGP_SECRET | base64 -di | gpg --import
@@ -244,7 +259,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.13.10]
+        scala: [3.2.2]
         java: [temurin@8]
     runs-on: ${{ matrix.os }}
     steps:
