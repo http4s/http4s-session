@@ -35,7 +35,6 @@ lazy val core = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-core" % catsV,
       "org.typelevel" %% "cats-effect" % catsEffectV,
-      "io.chrisdavenport" %% "mapref" % "0.2.1",
       "org.http4s" %% "http4s-core" % http4sV,
       "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectV % Test
     ),
