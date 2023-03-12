@@ -62,7 +62,7 @@ object VaultSessionMiddleware {
   }
 
   def transformRoutes[F[_]: Functor](routes: HttpRoutes[F]): SessionRoutes[F, Option[Vault]] = {
-    Kleisli { contextRequest: ContextRequest[F, Option[Vault]] =>
+    Kleisli { (contextRequest: ContextRequest[F, Option[Vault]]) =>
       val initVault =
         contextRequest.context.fold(contextRequest.req.attributes)(context => context ++ contextRequest.req.attributes)
       routes
