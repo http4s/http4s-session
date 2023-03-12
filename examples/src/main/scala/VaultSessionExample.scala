@@ -38,7 +38,7 @@ object VaultSessionExample extends IOApp {
     server[IO].use(_ => IO.never).as(ExitCode.Success)
   }
 
-  def server[F[_]: Concurrent: Timer: ContextShift]: Resource[F, Unit] = {
+  def server[F[_]: Async]: Resource[F, Unit] = {
     for {
       store <- Resource.eval(SessionStore.create[F, Vault]())
       key <- Resource.eval(Key.newKey[F, PageViews])

@@ -22,8 +22,8 @@
 package org.http4s.session
 
 import cats._
+import cats.effect.std.Random
 import cats.syntax.all._
-import io.chrisdavenport.random._
 import org.http4s._
 
 final case class SessionIdentifier(value: String)
