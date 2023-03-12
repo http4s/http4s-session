@@ -23,7 +23,9 @@ package org.http4s.session
 
 import cats._
 import cats.effect._
-import cats.effect.std.{MapRef, Random, SecureRandom}
+import cats.effect.std.MapRef
+import cats.effect.std.Random
+import cats.effect.std.SecureRandom
 import cats.syntax.all._
 
 trait SessionStore[F[_], A] {
