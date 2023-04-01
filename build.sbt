@@ -30,7 +30,7 @@ lazy val `http4s-session` =
     .enablePlugins(NoPublishPlugin)
 
 lazy val core =
-  crossProject(JVMPlatform, NativePlatform)
+  crossProject(JVMPlatform, JSPlatform, NativePlatform)
     .crossType(CrossType.Pure)
     .in(file("core"))
     .settings(
