@@ -24,28 +24,30 @@ val http4sV = "0.23.18"
 val munitCatsEffectV = "2.0.0-M3"
 
 // Projects
-lazy val `http4s-session` = project
-  .in(file("."))
-  .enablePlugins(NoPublishPlugin)
-  .aggregate(core, examples)
+lazy val `http4s-session` =
+  tlCrossRootProject
+    .aggregate(core)
+    .enablePlugins(NoPublishPlugin)
 
-lazy val core = project
-  .in(file("core"))
-  .settings(
-    name := "http4s-session",
-    libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-core" % catsV,
-      "org.typelevel" %% "cats-effect" % catsEffectV,
-      "org.http4s" %% "http4s-core" % http4sV,
-      "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectV % Test
-    ),
-    mimaPreviousArtifacts ~= { _.filterNot(_.revision == "0.1.0") }
-  )
+lazy val core =
+  crossProject(JVMPlatform, NativePlatform)
+    .crossType(CrossType.Pure)
+    .in(file("core"))
+    .settings(
+      name := "http4s-session",
+      libraryDependencies ++= Seq(
+        "org.typelevel" %% "cats-core" % catsV,
+        "org.typelevel" %% "cats-effect" % catsEffectV,
+        "org.http4s" %% "http4s-core" % http4sV,
+        "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectV % Test
+      ),
+      mimaPreviousArtifacts ~= { _.filterNot(_.revision == "0.1.0") }
+    )
 
 lazy val examples = project
   .in(file("examples"))
   .enablePlugins(NoPublishPlugin)
-  .dependsOn(core)
+  .dependsOn(`http4s-session`.jvm)
   .settings(
     name := "http4s-session-examples",
     libraryDependencies ++= Seq(
@@ -57,5 +59,5 @@ lazy val examples = project
 
 lazy val docs = project
   .in(file("site"))
-  .dependsOn(core)
+  .dependsOn(`http4s-session`.jvm)
   .enablePlugins(Http4sOrgSitePlugin)
