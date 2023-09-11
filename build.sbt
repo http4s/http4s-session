@@ -3,7 +3,7 @@ val Scala3 = "3.3.1"
 
 ThisBuild / tlBaseVersion := "0.2"
 ThisBuild / crossScalaVersions := Seq(Scala213, Scala3)
-ThisBuild / scalaVersion := crossScalaVersions.value.last
+ThisBuild / scalaVersion := Scala213
 ThisBuild / developers := List(
   Developer("ChristopherDavenport",
             "Christopher Davenport",
