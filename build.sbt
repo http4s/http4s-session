@@ -18,7 +18,7 @@ ThisBuild / licenses := List("MIT" -> url("http://opensource.org/licenses/MIT"))
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
 val catsV = "2.10.0"
-val catsEffectV = "3.5.1"
+val catsEffectV = "3.5.2"
 val fs2V = "3.6.1"
 val http4sV = "0.23.23"
 val munitCatsEffectV = "2.0.0-M3"
