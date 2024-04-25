@@ -14,6 +14,7 @@ ThisBuild / developers := List(
 ThisBuild / tlSitePublishBranch := Some("main")
 ThisBuild / homepage := Some(url("https://github.com/http4s/http4s-session"))
 ThisBuild / licenses := List("MIT" -> url("http://opensource.org/licenses/MIT"))
+ThisBuild / startYear := Some(2024)
 
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
