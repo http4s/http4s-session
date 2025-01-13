@@ -126,14 +126,15 @@ object SessionMiddleware {
             )
           case (Some(id), None) =>
             sessionStore
-              .modifySession(id,
-                             { now =>
-                               val next: Option[A] = mergeOnChanged.fold(Option.empty[A]) { mm =>
-                                 if (!mm.eqv(sessionOpt, now)) mm.whenDifferent(now, Option.empty)
-                                 else None
-                               }
-                               (next, ())
-                             }
+              .modifySession(
+                id,
+                { now =>
+                  val next: Option[A] = mergeOnChanged.fold(Option.empty[A]) { mm =>
+                    if (!mm.eqv(sessionOpt, now)) mm.whenDifferent(now, Option.empty)
+                    else None
+                  }
+                  (next, ())
+                }
               )
               .as(response.response.putHeaders(deleteCookie))
         })
@@ -198,25 +199,27 @@ object SessionMiddleware {
         response <- sessionApp(ContextRequest(sessionOpt.getOrElse(default), req))
         out <- OptionT.liftF(sessionId match {
           case Some(id) =>
-            sessionStore.modifySession(id,
-                                       { now =>
-                                         val next: Option[A] = mergeOnChanged.fold(Option.empty[A]) { mm =>
-                                           if (!mm.eqv(sessionOpt, now)) mm.whenDifferent(now, Option.empty)
-                                           else None
-                                         }
-                                         (next, ())
-                                       }
+            sessionStore.modifySession(
+              id,
+              { now =>
+                val next: Option[A] = mergeOnChanged.fold(Option.empty[A]) { mm =>
+                  if (!mm.eqv(sessionOpt, now)) mm.whenDifferent(now, Option.empty)
+                  else None
+                }
+                (next, ())
+              }
             ) >> sessionCookie(id).map(response.response.putHeaders(_))
           case None =>
             sessionStore.createSessionId.flatMap(id =>
-              sessionStore.modifySession(id,
-                                         { now =>
-                                           val next: Option[A] = mergeOnChanged.fold(Option.empty[A]) { mm =>
-                                             if (!mm.eqv(sessionOpt, now)) mm.whenDifferent(now, Option.empty)
-                                             else None
-                                           }
-                                           (next, ())
-                                         }
+              sessionStore.modifySession(
+                id,
+                { now =>
+                  val next: Option[A] = mergeOnChanged.fold(Option.empty[A]) { mm =>
+                    if (!mm.eqv(sessionOpt, now)) mm.whenDifferent(now, Option.empty)
+                    else None
+                  }
+                  (next, ())
+                }
               ) >> sessionCookie(id).map(response.response.putHeaders(_))
             )
         })
