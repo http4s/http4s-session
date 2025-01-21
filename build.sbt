@@ -18,7 +18,7 @@ ThisBuild / startYear := Some(2024)
 
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
-val catsV = "2.12.0"
+val catsV = "2.13.0"
 val catsEffectV = "3.5.7"
 val fs2V = "3.6.1"
 val http4sV = "0.23.30"
