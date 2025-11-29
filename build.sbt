@@ -21,7 +21,7 @@ val Scala213Cond = s"matrix.scala == '$Scala213'"
 val catsV = "2.13.0"
 val catsEffectV = "3.6.3"
 val fs2V = "3.6.1"
-val http4sV = "0.23.32"
+val http4sV = "0.23.33"
 val munitCatsEffectV = "2.1.0"
 
 // Projects
