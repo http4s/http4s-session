@@ -98,7 +98,7 @@ object SessionMiddleware {
         sessionOpt <- OptionT.liftF(session)
         response <- sessionApp(ContextRequest(sessionOpt, req))
         out <- OptionT.liftF((sessionId, response.context) match {
-          case (None, None) => response.response.pure[F]
+          case (None, None)              => response.response.pure[F]
           case (Some(id), Some(context)) =>
             sessionStore.modifySession(
               id,
