@@ -29,13 +29,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-22.04]
-        scala: [2.13, 3]
+        scala: [3.8.1, 3.3.7]
         java: [temurin@8, temurin@11, temurin@17]
         project: [http4s-sessionJS, http4s-sessionNative, http4s-sessionJVM]
         exclude:
-          - scala: 3
+          - scala: 3.3.7
             java: temurin@11
-          - scala: 3
+          - scala: 3.3.7
             java: temurin@17
           - project: http4s-sessionJS
             java: temurin@11
@@ -201,62 +201,62 @@ jobs:
         if: matrix.java == 'temurin@17' && steps.setup-java-temurin-17.outputs.cache-hit == 'false'
         run: sbt +update
 
-      - name: Download target directories (2.13, http4s-sessionJS)
+      - name: Download target directories (3.8.1, http4s-sessionJS)
         uses: actions/download-artifact@v6
         with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-2.13-http4s-sessionJS
+          name: target-${{ matrix.os }}-${{ matrix.java }}-3.8.1-http4s-sessionJS
 
-      - name: Inflate target directories (2.13, http4s-sessionJS)
+      - name: Inflate target directories (3.8.1, http4s-sessionJS)
         run: |
           tar xf targets.tar
           rm targets.tar
 
-      - name: Download target directories (2.13, http4s-sessionNative)
+      - name: Download target directories (3.8.1, http4s-sessionNative)
         uses: actions/download-artifact@v6
         with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-2.13-http4s-sessionNative
+          name: target-${{ matrix.os }}-${{ matrix.java }}-3.8.1-http4s-sessionNative
 
-      - name: Inflate target directories (2.13, http4s-sessionNative)
+      - name: Inflate target directories (3.8.1, http4s-sessionNative)
         run: |
           tar xf targets.tar
           rm targets.tar
 
-      - name: Download target directories (2.13, http4s-sessionJVM)
+      - name: Download target directories (3.8.1, http4s-sessionJVM)
         uses: actions/download-artifact@v6
         with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-2.13-http4s-sessionJVM
+          name: target-${{ matrix.os }}-${{ matrix.java }}-3.8.1-http4s-sessionJVM
 
-      - name: Inflate target directories (2.13, http4s-sessionJVM)
+      - name: Inflate target directories (3.8.1, http4s-sessionJVM)
         run: |
           tar xf targets.tar
           rm targets.tar
 
-      - name: Download target directories (3, http4s-sessionJS)
+      - name: Download target directories (3.3.7, http4s-sessionJS)
         uses: actions/download-artifact@v6
         with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-3-http4s-sessionJS
+          name: target-${{ matrix.os }}-${{ matrix.java }}-3.3.7-http4s-sessionJS
 
-      - name: Inflate target directories (3, http4s-sessionJS)
+      - name: Inflate target directories (3.3.7, http4s-sessionJS)
         run: |
           tar xf targets.tar
           rm targets.tar
 
-      - name: Download target directories (3, http4s-sessionNative)
+      - name: Download target directories (3.3.7, http4s-sessionNative)
         uses: actions/download-artifact@v6
         with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-3-http4s-sessionNative
+          name: target-${{ matrix.os }}-${{ matrix.java }}-3.3.7-http4s-sessionNative
 
-      - name: Inflate target directories (3, http4s-sessionNative)
+      - name: Inflate target directories (3.3.7, http4s-sessionNative)
         run: |
           tar xf targets.tar
           rm targets.tar
 
-      - name: Download target directories (3, http4s-sessionJVM)
+      - name: Download target directories (3.3.7, http4s-sessionJVM)
         uses: actions/download-artifact@v6
         with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-3-http4s-sessionJVM
+          name: target-${{ matrix.os }}-${{ matrix.java }}-3.3.7-http4s-sessionJVM
 
-      - name: Inflate target directories (3, http4s-sessionJVM)
+      - name: Inflate target directories (3.3.7, http4s-sessionJVM)
         run: |
           tar xf targets.tar
           rm targets.tar
@@ -344,7 +344,7 @@ jobs:
       - name: Submit Dependencies
         uses: scalacenter/sbt-dependency-submission@v2
         with:
-          modules-ignore: http4s-session-examples_2.13 http4s-session-examples_3 http4s-sessionjs_2.13 http4s-sessionjs_3 docs_2.13 docs_3 http4s-sessionnative_2.13 http4s-sessionnative_3 http4s-sessionjvm_2.13 http4s-sessionjvm_3 sbt-http4s-org-scalafix-internal_2.13 sbt-http4s-org-scalafix-internal_3
+          modules-ignore: http4s-session-examples_3 http4s-session-examples_3 http4s-sessionjs_3 http4s-sessionjs_3 docs_3 docs_3 http4s-sessionnative_3 http4s-sessionnative_3 http4s-sessionjvm_3 http4s-sessionjvm_3 sbt-http4s-org-scalafix-internal_3 sbt-http4s-org-scalafix-internal_3
           configs-ignore: test scala-tool scala-doc-tool test-internal
 
   site:
