@@ -44,6 +44,9 @@ lazy val core =
       ),
       mimaPreviousArtifacts ~= { _.filterNot(_.revision == "0.1.0") }
     )
+    .nativeSettings(
+      tlVersionIntroduced := List("2.13", "3").map(_ -> "0.3.0").toMap
+    )
 
 lazy val examples = project
   .in(file("examples"))
