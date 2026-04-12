@@ -21,8 +21,8 @@ val Scala213Cond = s"matrix.scala == '$Scala213'"
 val catsV = "2.13.0"
 val catsEffectV = "3.7.0"
 val fs2V = "3.6.1"
-val http4sV = "0.23.33"
-val munitCatsEffectV = "2.1.0"
+val http4sV = "0.23.34"
+val munitCatsEffectV = "2.2.0"
 
 // Projects
 lazy val `http4s-session` =
@@ -43,6 +43,9 @@ lazy val core =
         "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectV % Test
       ),
       mimaPreviousArtifacts ~= { _.filterNot(_.revision == "0.1.0") }
+    )
+    .nativeSettings(
+      tlVersionIntroduced := List("2.13", "3").map(_ -> "0.3.0").toMap
     )
 
 lazy val examples = project
