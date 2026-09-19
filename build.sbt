@@ -22,7 +22,7 @@ val catsV = "2.13.0"
 val catsEffectV = "3.7.1"
 val fs2V = "3.6.1"
 val http4sV = "0.23.37"
-val munitCatsEffectV = "2.2.0"
+val munitCatsEffectV = "2.2.1"
 
 // Projects
 lazy val `http4s-session` =
