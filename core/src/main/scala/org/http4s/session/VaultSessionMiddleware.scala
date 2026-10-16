@@ -78,8 +78,9 @@ object VaultSessionMiddleware {
                 .fold(
                   ContextResponse(outContext.some, resp.withAttributes(outContext))
                 )(toRemove =>
-                  ContextResponse(toRemove.l.foldLeft(outContext) { case (v, k) => v.delete(k) }.some,
-                                  resp.withAttributes(outContext)
+                  ContextResponse(
+                    toRemove.l.foldLeft(outContext.delete(VaultKeysToRemove.key)) { case (v, k) => v.delete(k) }.some,
+                    resp.withAttributes(outContext)
                   )
                 )
             )(_ => ContextResponse(None, resp.withAttributes(outContext)))
